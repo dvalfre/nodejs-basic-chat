@@ -3,6 +3,8 @@ var app = express();
 var http = require('http').Server(app);
 var port = process.env.PORT || 3000;
 
+var io = require('socket.io')(http);
+
 // Configure app
 app.set('views', './views');
 app.set('view engine', 'pug');
@@ -10,6 +12,13 @@ app.set('view engine', 'pug');
 // Routes
 app.get('/', function(req, res) {
   res.render('index');
+});
+
+// socket.io
+io.on('connection', function(socket) {
+  socket.on('msg', function(msg) {
+    io.emit('msg', msg);
+  });
 });
 
 
